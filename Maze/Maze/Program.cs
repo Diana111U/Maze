@@ -101,8 +101,7 @@ public class Program
     public static void Main(string[] args)
     {
         //Путь к файлу карты
-        string projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-        string filePath = Path.Combine(projectDirectory, "map.txt");
+        string filePath = "map.txt";
 
         Game game = new Game(filePath);
         game.DrawMap();
