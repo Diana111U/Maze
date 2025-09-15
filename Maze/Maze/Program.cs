@@ -64,6 +64,36 @@ public class Game
             Console.WriteLine();
         }
     }
+
+    public void MovePlayer(ConsoleKey key)
+    {
+        int newX = PlayerX;
+        int newY = PlayerY;
+
+        switch (key)
+        {
+            case ConsoleKey.UpArrow: newX--; break; //Вверх
+            case ConsoleKey.DownArrow: newX++; break; //Вниз
+            case ConsoleKey.LeftArrow: newY--; break; //Влево
+            case ConsoleKey.RightArrow: newY++; break; //Вправо
+        }
+
+        if (newX >= 0 && newY >= 0 && newX < Map.GetLength(0) && newY < Map.GetLength(1))
+        {
+            if (Map[newX, newY] != '#') //Если не стена
+            {
+                //Очистим старую позицию игрока
+                Map[PlayerX, PlayerY] = '.'; 
+
+                //Перемещаем игрока на новое место
+                PlayerX = newX;
+                PlayerY = newY;
+
+                //Отметим новую позицию игрока
+                Map[PlayerX, PlayerY] = 'P'; 
+            }
+        }
+    }
 }
 
 public class Program
@@ -76,6 +106,22 @@ public class Program
 
         Game game = new Game(filePath);
         game.DrawMap();
+
+        while (true)
+        {
+            var key = Console.ReadKey(true).Key;
+            game.MovePlayer(key);
+            game.DrawMap();
+
+
+            //Проверка на достижение выхода (символ 'X')
+            if (game.PlayerX == game.ExitX && game.PlayerY == game.ExitY)
+            {
+                Console.WriteLine("Вы дошли до выхода!");
+                break;  //Выход из игры при достижении 'X'
+            }
+
+        }
 
         Console.ReadKey();
     }
